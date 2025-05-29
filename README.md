@@ -1,4 +1,23 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Board Frontend V2
+
+A Board API frontend application.
+
+<p align="center">
+  <a href="https://github.com/boomNDS/board-frontend-v2/actions/workflows/ci.yml" target="_blank">
+    <img src="https://github.com/boomNDS/board-frontend-v2/actions/workflows/ci.yml/badge.svg" alt="CI Status" />
+  </a>
+  <a href="https://github.com/boomNDS/board-frontend-v2/blob/main/LICENSE" target="_blank">
+    <img src="https://img.shields.io/github/license/boomNDS/board-frontend-v2" alt="License" />
+  </a>
+</p>
+
+### Environment Setup
+
+Create a `.env` file in the root directory:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:3001
+```
 
 ## Getting Started
 
@@ -20,14 +39,17 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+## Docker Support
 
-To learn more about Next.js, take a look at the following resources:
+### Building the Docker Image
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Build the image
+docker build --build-arg NEXT_PUBLIC_API_URL=http://localhost:3001 -t board-app .
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Run the container
+docker run -p 3000:3000 board-app
+```
 
 ## Deploy on Vercel
 
