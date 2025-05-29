@@ -14,9 +14,7 @@ export default function Home() {
           <div className="space-x-4">
             {user ? (
               <>
-                <span className="text-gray-600">
-                  Welcome, {user.username}!
-                </span>
+                <span className="text-gray-600">Welcome, {user.username}!</span>
                 <Button onClick={logout} variant="outline">
                   Logout
                 </Button>
@@ -38,8 +36,12 @@ export default function Home() {
           <div className="bg-white p-6 rounded-lg shadow-md">
             <h2 className="text-xl font-semibold mb-4">Your Profile</h2>
             <div className="space-y-2">
-              <p><strong>Username:</strong> {user.username}</p>
-              <p><strong>Email:</strong> {user.email}</p>
+              <p>
+                <strong>Username:</strong> {user.username}
+              </p>
+              <p>
+                <strong>Email:</strong> {user.email}
+              </p>
             </div>
           </div>
         ) : (

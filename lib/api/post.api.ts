@@ -1,7 +1,7 @@
 import { useApi } from "../api";
 import type {
-  Post,
   CreatePostRequest,
+  Post,
   UpdatePostRequest,
 } from "../types/api.types";
 

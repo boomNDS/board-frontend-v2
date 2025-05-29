@@ -5,7 +5,7 @@
     "rules": {
       "recommended": true
     },
-    "ignore": ["components/ui/**.tsx"]
+    "ignore": ["components/ui/**/*.tsx"]
   },
   "formatter": {
     "enabled": true,

@@ -1,8 +1,8 @@
 import { useApi } from "../api";
 import type {
+  AuthResponse,
   LoginRequest,
   RegisterRequest,
-  AuthResponse,
 } from "../types/api.types";
 
 export const useAuthApi = () => {

@@ -1,12 +1,6 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useAuth } from '@/lib/auth-context'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,10 +8,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { toast } from "sonner"
-import { useRouter } from 'next/navigation'
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/lib/auth-context";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -26,12 +26,12 @@ const formSchema = z.object({
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
   }),
-})
+});
 
 export default function LoginPage() {
-  const { login } = useAuth()
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const { login } = useAuth();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -39,24 +39,24 @@ export default function LoginPage() {
       username: "",
       password: "",
     },
-  })
+  });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setIsLoading(true)
-      await login({ ...values })
-      toast.success("Logged in successfully!")
-      router.push('/')
+      setIsLoading(true);
+      await login({ ...values });
+      toast.success("Logged in successfully!");
+      router.push("/");
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(error.message || "Failed to login.")
+        toast.error(error.message || "Failed to login.");
       } else {
-        toast.error("An unexpected error occurred.")
+        toast.error("An unexpected error occurred.");
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -105,12 +105,12 @@ export default function LoginPage() {
           </form>
         </Form>
         <p className="mt-4 text-center text-sm text-gray-600">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <Link href="/register" className="text-blue-500 hover:underline">
             Register
           </Link>
         </p>
       </div>
     </div>
-  )
-} 
+  );
+}

@@ -1,12 +1,6 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import { useAuth } from '@/lib/auth-context'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -14,10 +8,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { toast } from "sonner"
-import { useRouter } from 'next/navigation'
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useAuth } from "@/lib/auth-context";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import { z } from "zod";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -29,12 +29,12 @@ const formSchema = z.object({
   password: z.string().min(10, {
     message: "Password must be at least 10 characters.",
   }),
-})
+});
 
 export default function RegisterPage() {
-  const { register } = useAuth()
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const { register } = useAuth();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -43,24 +43,24 @@ export default function RegisterPage() {
       username: "",
       password: "",
     },
-  })
+  });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      setIsLoading(true)
-      await register({ ...values })
-      toast.success("Registered Successfully!")
-      router.push('/login')
+      setIsLoading(true);
+      await register({ ...values });
+      toast.success("Registered Successfully!");
+      router.push("/login");
     } catch (error) {
       if (error instanceof Error) {
-        toast.error(error.message || "Registration failed.")
+        toast.error(error.message || "Registration failed.");
       } else {
-        toast.error("An unexpected error occurred.")
+        toast.error("An unexpected error occurred.");
       }
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
@@ -127,12 +127,12 @@ export default function RegisterPage() {
           </form>
         </Form>
         <p className="mt-4 text-center text-sm text-gray-600">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <Link href="/login" className="text-blue-500 hover:underline">
             Login
           </Link>
         </p>
       </div>
     </div>
-  )
-} 
+  );
+}
