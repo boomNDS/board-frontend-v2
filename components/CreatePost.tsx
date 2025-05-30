@@ -80,7 +80,7 @@ export function CreatePost() {
         </Button>
       </DialogTrigger>
 
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="w-full max-w-[685px] overflow-hidden">
         <DialogHeader>
           <DialogTitle>Create Post</DialogTitle>
         </DialogHeader>
@@ -96,7 +96,7 @@ export function CreatePost() {
                     <Select onValueChange={field.onChange} value={field.value}>
                       <SelectTrigger
                         variant="success-outline"
-                        className="w-full"
+                        className="w-full lg:w-[195px]"
                       >
                         <SelectValue placeholder="Choose a community" />
                       </SelectTrigger>
@@ -144,18 +144,22 @@ export function CreatePost() {
               )}
             />
 
-            <DialogFooter className="flex flex-col space-x-2 overflow-hidden">
+            <DialogFooter className="flex flex-col lg:flex-row space-x-2 overflow-hidden">
               <DialogClose asChild>
                 <Button
                   type="button"
                   variant="success-outline"
                   onClick={handleCancel}
-                  className="w-full"
+                  className="w-full lg:w-auto"
                 >
                   Cancel
                 </Button>
               </DialogClose>
-              <Button variant="success" type="submit" className="w-full">
+              <Button
+                variant="success"
+                type="submit"
+                className="w-full lg:w-auto"
+              >
                 Post
               </Button>
             </DialogFooter>
