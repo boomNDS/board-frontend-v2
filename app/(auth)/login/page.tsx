@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useRouter } from 'next/navigation'
 
 const formSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -24,11 +25,12 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const { login } = useAuth();
+  const router = useRouter()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
-      password: "",
+      password: "password",
     },
   });
 
@@ -36,6 +38,7 @@ export default function LoginPage() {
     try {
       await login({ ...values });
       toast.success("Login successful");
+      router.push("/");
     } catch (error) {
       toast.error("Invalid credentials");
     }
@@ -54,7 +57,6 @@ export default function LoginPage() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white">Username</FormLabel>
                 <FormControl>
                   <Input className="bg-white" placeholder="Username" {...field} />
                 </FormControl>
@@ -67,9 +69,9 @@ export default function LoginPage() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white">Password</FormLabel>
+                <FormLabel className="hidden text-white">Password</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" type="password" placeholder="Password" {...field} />
+                  <Input className="hidden bg-white" type="password" placeholder="Password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

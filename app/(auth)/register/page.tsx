@@ -16,6 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
+import { useRouter } from 'next/navigation'
+
 
 const formSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -25,12 +27,14 @@ const formSchema = z.object({
 
 export default function RegisterPage() {
   const { register: registerUser } = useAuth();
+  const router = useRouter()
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
       email: "",
-      password: "",
+      password: "password",
     },
   });
 
@@ -38,6 +42,7 @@ export default function RegisterPage() {
     try {
       await registerUser({ ...values });
       toast.success("Registration successful");
+      router.push("/login");
     } catch (error) {
       toast.error("Registration failed");
     }
@@ -82,9 +87,9 @@ export default function RegisterPage() {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-white">Password</FormLabel>
+                <FormLabel className="hidden text-white">Password</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" type="password" placeholder="Password" {...field} />
+                  <Input className="hidden bg-white" type="password" placeholder="Password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
