@@ -2,15 +2,19 @@
 import { BlogCard } from "@/components/blogCard";
 import { SearchBar } from "@/components/SearchBar";
 import { useState } from "react";
+import { communityOptions } from "@/lib/types/post.types";
+import { useAuth } from "@/lib/auth-context";
 
 export default function Home() {
+  const { user } = useAuth();
   const [selectedCommunity, setSelectedCommunity] = useState<string>();
   const [searchQuery, setSearchQuery] = useState("");
 
   const mockData = Array.from({ length: 5 }).map((_, i) => ({
     username: `User ${i + 1}`,
     avatar: undefined,
-    category: ["Tech", "Life", "News", "Travel", "Food"][i % 5],
+    community:
+      communityOptions[Math.floor(Math.random() * communityOptions.length)],
     title: `Sample Blog Title ${i + 1}`,
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -46,10 +50,11 @@ export default function Home() {
                     : "";
             return (
               <BlogCard
+                userId={user?.id || 1}
                 key={`blog-${post.title}`}
                 className={roundingClass}
                 username={post.username}
-                category={post.category}
+                community={post.community}
                 title={post.title}
                 content={post.content}
                 comments={post.comments}

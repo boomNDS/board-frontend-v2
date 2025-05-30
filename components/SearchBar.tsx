@@ -7,9 +7,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
 import { CreatePost } from "@/components/CreatePost";
+import { communityOptions } from "@/lib/types/post.types";
 
 interface SearchBarProps {
   onSearch?: (value: string) => void;
@@ -75,22 +75,13 @@ export function SearchBar({
                 <SelectValue placeholder="Community" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="history">History</SelectItem>
-                <SelectItem value="food">Food</SelectItem>
-                <SelectItem value="pets">Pets</SelectItem>
-                <SelectItem value="health">Health</SelectItem>
-                <SelectItem value="fashion">Fashion</SelectItem>
-                <SelectItem value="exercise">Exercise</SelectItem>
-                <SelectItem value="others">Others</SelectItem>
+                {communityOptions.map((option) => (
+                  <SelectItem key={option} value={option}>
+                    <span className="first-letter:capitalize">{option}</span>
+                  </SelectItem>
+                ))}
               </SelectContent>
             </Select>
-            {/* <Button
-              className="h-[40px]"
-              variant="success"
-              onClick={onCreate}
-            >
-              Create +
-            </Button> */}
             <CreatePost />
           </div>
         </div>

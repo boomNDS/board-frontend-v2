@@ -29,7 +29,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
+import { Edit3 } from "lucide-react";
+import type { communityOptionsType } from "@/lib/types/post.types";
 import { communityOptions } from "@/lib/types/post.types";
 
 const createPostSchema = z.object({
@@ -37,35 +38,53 @@ const createPostSchema = z.object({
   title: z.string().min(1, "Title is required"),
   context: z.string().min(1, "Content is required"),
 });
-type CreatePostValues = z.infer<typeof createPostSchema>;
+type EditPostValues = z.infer<typeof createPostSchema>;
 
-export function CreatePost() {
-  const form = useForm<CreatePostValues>({
+interface EditPostProps {
+  userId: number;
+  post: {
+    username: string;
+    community: string;
+    title: string;
+    content: string;
+  };
+}
+
+export function EditPost({ userId, post }: EditPostProps) {
+  const form = useForm<EditPostValues>({
     resolver: zodResolver(createPostSchema),
-    defaultValues: { community: "history", title: "", context: "" },
+    defaultValues: {
+      community: (post.community as communityOptionsType) || "history",
+      title: post.title,
+      context: post.content,
+    },
   });
 
   const handleCancel = () => {
     form.reset();
   };
 
-  const onSubmit = (data: CreatePostValues) => {
-    console.log("Submitted:", data);
+  const onSubmit = (data: EditPostValues) => {
+    console.log("Submitted:", { ...data, userId });
     form.reset();
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="h-[40px]" variant="success">
-          Create
-          <Plus className="ml-2 h-5 w-5" />
+        <Button
+          className="cursor-pointer"
+          variant="ghost"
+          size="sm"
+          aria-label="Favorite"
+        >
+          <Edit3 className="text-[#2B5F44] h-5 w-5" />
         </Button>
       </DialogTrigger>
 
       <DialogContent className="w-full max-w-[685px] overflow-hidden">
         <DialogHeader>
-          <DialogTitle>Create Post</DialogTitle>
+          <DialogTitle>Edit Post</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>

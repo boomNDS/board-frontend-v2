@@ -1,21 +1,22 @@
 "use client";
 import { useAuth } from "@/lib/auth-context";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { BlogCard } from "@/components/blogCard";
 import { SearchBar } from "@/components/SearchBar";
 import { useState } from "react";
-
+import { communityOptions } from "@/lib/types/post.types";
 
 export default function OurBlog() {
   const { user } = useAuth();
-  const router = useRouter()
+  const router = useRouter();
   const [selectedCommunity, setSelectedCommunity] = useState<string>();
   const [searchQuery, setSearchQuery] = useState("");
 
   const mockData = Array.from({ length: 5 }).map((_, i) => ({
     username: `User ${i + 1}`,
     avatar: undefined,
-    category: ["Tech", "Life", "News", "Travel", "Food"][i % 5],
+    community:
+      communityOptions[Math.floor(Math.random() * communityOptions.length)],
     title: `Sample Blog Title ${i + 1}`,
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
@@ -35,9 +36,8 @@ export default function OurBlog() {
     console.log("Create button clicked");
   };
 
-
   if (!user) {
-    router.back()
+    router.back();
   }
 
   return (
@@ -59,18 +59,21 @@ export default function OurBlog() {
                   : idx === len - 1
                     ? "rounded-b-[12px]"
                     : "";
-            return <BlogCard
-              key={`blog-${post.title}`}
-              className={roundingClass}
-              username={post.username}
-              category={post.category}
-              title={post.title}
-              content={post.content}
-              comments={post.comments}
-              isEdit
-            />
+            return (
+              <BlogCard
+                key={`blog-${post.title}`}
+                className={roundingClass}
+                username={post.username}
+                community={post.community}
+                title={post.title}
+                content={post.content}
+                comments={post.comments}
+                isEdit
+              />
+            );
           })}
         </div>
       </div>
-    </main>);
-} 
+    </main>
+  );
+}
