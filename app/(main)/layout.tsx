@@ -9,12 +9,10 @@ export default function MainLayout({
   return (
     <div className="min-h-screen bg-[#BBC2C0]">
       <Navbar />
-      <div className="flex mt-10">
+      <div className="flex">
         <Sidebar className="hidden md:block" />
-        <main className="flex-1 p-4 md:p-8">
-          {children}
-        </main>
+        <main className="flex-1 p-4 md:p-8">{children}</main>
       </div>
     </div>
   );
-} 
+}

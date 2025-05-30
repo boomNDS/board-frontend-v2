@@ -7,8 +7,9 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button";
 import { useState, useEffect, useRef } from "react";
+import { CreatePost } from "@/components/CreatePost";
 
 interface SearchBarProps {
   onSearch?: (value: string) => void;
@@ -20,7 +21,6 @@ interface SearchBarProps {
 export function SearchBar({
   onSearch,
   onCommunityChange,
-  onCreate,
   selectedCommunity,
 }: SearchBarProps) {
   const [isSearchActive, setIsSearchActive] = useState(false);
@@ -28,7 +28,10 @@ export function SearchBar({
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      if (
+        searchRef.current &&
+        !searchRef.current.contains(event.target as Node)
+      ) {
         setIsSearchActive(false);
       }
     }
@@ -45,13 +48,15 @@ export function SearchBar({
         <div className="flex items-center gap-5 flex-1" ref={searchRef}>
           <button
             type="button"
-            className={`${isSearchActive ? 'hidden' : 'block'} md:hidden p-2 transition-opacity duration-200`}
+            className={`${isSearchActive ? "hidden" : "block"} md:hidden p-2 transition-opacity duration-200`}
             onClick={() => setIsSearchActive(!isSearchActive)}
           >
             <Search className="h-5 w-5" />
           </button>
 
-          <div className={`${isSearchActive ? 'opacity-100 scale-100' : 'opacity-0 scale-95 hidden'} md:opacity-100 md:scale-100 md:block flex-1 transition-all duration-200 ease-in-out`}>
+          <div
+            className={`${isSearchActive ? "opacity-100 scale-100" : "opacity-0 scale-95 hidden"} md:opacity-100 md:scale-100 md:block flex-1 transition-all duration-200 ease-in-out`}
+          >
             <Input
               className="w-full max-w-[507px] h-[40px]"
               icon={Search}
@@ -62,10 +67,12 @@ export function SearchBar({
         </div>
 
         <div>
-          <div className={`${isSearchActive ? 'opacity-0 scale-95 hidden' : 'opacity-100 scale-100 flex'} md:opacity-100 md:scale-100 md:flex items-center gap-5 transition-all duration-200 ease-in-out`}>
+          <div
+            className={`${isSearchActive ? "opacity-0 scale-95 hidden" : "opacity-100 scale-100 flex"} md:opacity-100 md:scale-100 md:flex items-center gap-5 transition-all duration-200 ease-in-out`}
+          >
             <Select value={selectedCommunity} onValueChange={onCommunityChange}>
-              <SelectTrigger className="w-[180px] h-[40px]">
-                <SelectValue placeholder="Choose a community" />
+              <SelectTrigger variant="ghost" className="w-auto-[40px]">
+                <SelectValue placeholder="Community" />
               </SelectTrigger>
               <SelectContent>
                 <SelectItem value="history">History</SelectItem>
@@ -77,16 +84,17 @@ export function SearchBar({
                 <SelectItem value="others">Others</SelectItem>
               </SelectContent>
             </Select>
-            <Button
+            {/* <Button
               className="h-[40px]"
               variant="success"
               onClick={onCreate}
             >
               Create +
-            </Button>
+            </Button> */}
+            <CreatePost />
           </div>
         </div>
       </div>
     </div>
   );
-} 
+}
