@@ -5,6 +5,7 @@ import { useAuth } from "@/lib/auth-context"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 import {
   Sheet,
   SheetContent,
@@ -15,9 +16,10 @@ import { Menu, LogOut, Home, Edit } from "lucide-react"
 export function Navbar() {
   const { user, logout } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
+  const pathname = usePathname()
 
   return (
-    <nav className="border-b bg-[#243831]">
+    <nav className="fixed top-0 w-full z-50 border-b bg-[#243831]">
       <div className="flex h-16 items-center justify-between mx-5 md:mx-16">
         <Link href="/" className="flex items-center space-x-2">
           <h1 className="text-white font-castoro text-3xl leading-[100%] font-normal italic ml-5">
@@ -62,16 +64,25 @@ export function Navbar() {
             <SheetContent side="right" className="bg-[#243831] border-0">
               <div className="flex flex-col space-y-4 mt-12 mx-5">
                 <Link href="/" onClick={() => setIsOpen(false)}>
-                  <Button variant="ghost" className="w-full justify-start text-white">
+                  <Button
+                    variant="ghost"
+                    className={`w-full justify-start text-white ${pathname === "/" ? "font-bold" : ""
+                      }`}
+                  >
                     <Home className="text-white size-4" /><span>Home</span>
                   </Button>
                 </Link>
-                {user ? <Link href="/our-blogs" onClick={() => setIsOpen(false)}>
-                  <Button variant="ghost" className="w-full justify-start text-white">
+                {user && (
+                  <Link href="/our-blogs" onClick={() => setIsOpen(false)}>
+                    <Button
+                      variant="ghost"
+                      className={`w-full justify-start text-white ${pathname === "/our-blogs" ? "font-bold" : ""
+                        }`}
+                    >
                     <Edit className="text-white size-4" /><span>Our Blog</span>
                   </Button>
-                </Link> : <></>
-                }
+                  </Link>
+                )}
 
                 <hr className="border-gray-600 my-6" />
                 {user ? (
