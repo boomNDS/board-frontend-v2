@@ -13,12 +13,11 @@ import { Button } from "@/components/ui/button";
 import { Star, MessageCircle, Trash } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { EditPost } from "@/components/EditPost";
-import { ConfirmDialog } from "@/components/ConfirmDigalog";
-import { set } from "react-hook-form";
+import { ConfirmDialog } from "@/components/ConfirmDialog";
 
 interface BlogCardProps {
   className?: string;
-  userId: number;
+  userId?: number;
   username: string;
   community: string;
   title: string;
@@ -75,7 +74,7 @@ export function BlogCard({
               </CardTitle>
             </div>
           </div>
-          {isEdit ? (
+          {isEdit && userId ? (
             <div>
               <EditPost
                 userId={userId}
