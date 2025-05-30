@@ -1,10 +1,15 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Castoro } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { AuthProvider } from "@/lib/auth-context";
 
 const inter = Inter({ subsets: ["latin"] });
+const castoro = Castoro({
+  weight: "400",
+  subsets: ["latin"],
+  variable: '--font-castoro',
+});
 
 export const metadata: Metadata = {
   title: "Board App",
@@ -18,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} ${castoro.variable}`}>
         <AuthProvider>
           {children}
           <Toaster />
