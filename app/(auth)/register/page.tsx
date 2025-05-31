@@ -43,7 +43,7 @@ export default function RegisterPage() {
       await registerUser({ ...values });
       toast.success("Registration successful");
       router.push("/login");
-    } catch (error) {
+    } catch {
       toast.error("Registration failed");
     }
   }

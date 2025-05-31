@@ -11,6 +11,7 @@ export default function Home() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const mockData = Array.from({ length: 5 }).map((_, i) => ({
+    id: i + 1,
     username: `User ${i + 1}`,
     avatar: undefined,
     community:
@@ -23,6 +24,7 @@ export default function Home() {
   const len = mockData.length;
 
   const handleSearch = (value: string) => {
+    console.log(searchQuery)
     setSearchQuery(value);
   };
 
@@ -50,6 +52,7 @@ export default function Home() {
                     : "";
             return (
               <BlogCard
+                id={post.id}
                 userId={user?.id || 1}
                 key={`blog-${post.title}`}
                 className={roundingClass}

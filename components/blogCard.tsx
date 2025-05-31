@@ -14,9 +14,12 @@ import { Star, MessageCircle, Trash } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { EditPost } from "@/components/EditPost";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
+import Link from "next/link";
+
 
 interface BlogCardProps {
   className?: string;
+  id: number;
   userId?: number;
   username: string;
   community: string;
@@ -28,6 +31,7 @@ interface BlogCardProps {
 
 export function BlogCard({
   className,
+  id,
   userId,
   username,
   community,
@@ -96,21 +100,23 @@ export function BlogCard({
             </Button>
           )}
         </CardHeader>
+        <Link href={`/blog/${id}`}>
 
-        <CardContent className="space-y-2">
-          <Badge variant="secondary">{community}</Badge>
-          <CardTitle className="text-lg">{title}</CardTitle>
-          <CardDescription className="text-sm text-muted-foreground">
-            {displayText}
-          </CardDescription>
-        </CardContent>
+          <CardContent className="space-y-2">
+            <Badge variant="secondary">{community}</Badge>
+            <CardTitle className="text-lg">{title}</CardTitle>
+            <CardDescription className="text-sm text-muted-foreground">
+              {displayText}
+            </CardDescription>
+          </CardContent>
 
-        <CardFooter className="flex items-center">
-          <MessageCircle className="h-5 w-5 mr-2 text-muted-foreground" />
-          <span className="text-sm text-muted-foreground">
-            {comments} Comments
-          </span>
-        </CardFooter>
+          <CardFooter className="flex items-center mt-2">
+            <MessageCircle className="h-5 w-5 mr-2 text-muted-foreground" />
+            <span className="text-sm text-muted-foreground">
+              {comments} Comments
+            </span>
+          </CardFooter>
+        </Link>
       </Card>
       <ConfirmDialog
         open={isConfirmDialogOpen}

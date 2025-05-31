@@ -8,8 +8,6 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
-  DialogClose,
 } from "@/components/ui/dialog";
 import {
   Form,
@@ -18,30 +16,21 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
-import { communityOptions } from "@/lib/types/post.types";
+import { useMediaQuery } from "@/lib/utils";
+
 
 const createPostSchema = z.object({
-  community: z.enum(communityOptions),
-  title: z.string().min(1, "Title is required"),
   context: z.string().min(1, "Content is required"),
 });
 type CreatePostValues = z.infer<typeof createPostSchema>;
 
-export function CreatePost() {
+export function CommentDialog() {
+  const isMobile = useMediaQuery(768);
   const form = useForm<CreatePostValues>({
     resolver: zodResolver(createPostSchema),
-    defaultValues: { community: "history", title: "", context: "" },
+    defaultValues: { context: "" },
   });
 
   const handleCancel = () => {
@@ -53,101 +42,70 @@ export function CreatePost() {
     form.reset();
   };
 
+  const FormContent = () => (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="context"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Textarea
+                  placeholder="What's on your mind..."
+                  rows={6}
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <div className="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2">
+          <Button
+            type="button"
+            variant="success-outline"
+            onClick={handleCancel}
+            className="w-full lg:w-auto"
+          >
+            Cancel
+          </Button>
+          <Button
+            variant="success"
+            type="submit"
+            className="w-full lg:w-auto"
+          >
+            Post
+          </Button>
+        </div>
+      </form>
+    </Form>
+  );
+
+  if (isMobile) {
+    return (
+      <Dialog>
+        <DialogTrigger asChild>
+          <Button className="mt-5" variant="success-outline" type="button">
+            Add a Comments
+          </Button>
+        </DialogTrigger>
+
+        <DialogContent className="w-full max-w-[685px] overflow-hidden">
+          <DialogHeader>
+            <DialogTitle>Add Comments</DialogTitle>
+          </DialogHeader>
+          <FormContent />
+        </DialogContent>
+      </Dialog>
+    );
+  }
+
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <Button className="h-[40px]" variant="success">
-          Create
-          <Plus className="ml-2 h-5 w-5" />
-        </Button>
-      </DialogTrigger>
-
-      <DialogContent className="w-full max-w-[685px] overflow-hidden">
-        <DialogHeader>
-          <DialogTitle>Create Post</DialogTitle>
-        </DialogHeader>
-
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="community"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Select onValueChange={field.onChange} value={field.value}>
-                      <SelectTrigger
-                        variant="success-outline"
-                        className="w-full lg:w-[195px]"
-                      >
-                        <SelectValue placeholder="Choose a community" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {communityOptions.map((option) => (
-                          <SelectItem key={option} value={option}>
-                            {option.charAt(0).toUpperCase() + option.slice(1)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input placeholder="Title" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <FormField
-              control={form.control}
-              name="context"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Textarea
-                      placeholder="What’s on your mind..."
-                      rows={6}
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <DialogFooter className="flex flex-col lg:flex-row space-x-2 overflow-hidden">
-              <DialogClose asChild>
-                <Button
-                  type="button"
-                  variant="success-outline"
-                  onClick={handleCancel}
-                  className="w-full lg:w-auto"
-                >
-                  Cancel
-                </Button>
-              </DialogClose>
-              <Button
-                variant="success"
-                type="submit"
-                className="w-full lg:w-auto"
-              >
-                Post
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
-      </DialogContent>
-    </Dialog>
+    <div className="w-full max-w-[685px] p-6">
+      <h2 className="text-xl font-semibold mb-4">Add Comments</h2>
+      <FormContent />
+    </div>
   );
 }
