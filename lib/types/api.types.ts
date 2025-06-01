@@ -28,8 +28,8 @@ export interface Post {
   content: string;
   community: communityOptionsType;
   authorId: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
   user: User;
   commentsCount: number;
   comments: Comment[];
@@ -58,15 +58,18 @@ export interface Comment {
   content: string;
   postId: number;
   authorId: number;
-  createdAt: string;
-  updatedAt: string;
+  createdAt: Date;
+  updatedAt: Date;
+  user: User;
 }
 
 export interface CreateCommentRequest {
   content: string;
   postId: number;
+  [key: string]: string | number | undefined;
 }
 
 export interface UpdateCommentRequest {
   content: string;
+  [key: string]: string | undefined;
 }

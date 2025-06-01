@@ -7,8 +7,10 @@ import { useState, useEffect, useCallback } from "react";
 import { usePostApi } from "@/lib/api/post.api";
 import type { Post } from "@/lib/types/api.types";
 import { SquareLibrary } from "lucide-react";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
 
 export default function OurBlog() {
+  const [animationParent] = useAutoAnimate();
   const { user } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -72,7 +74,10 @@ export default function OurBlog() {
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-between p-24 bg-[#BBC2C0]">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm">
+      <div
+        ref={animationParent}
+        className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm"
+      >
         <SearchBar
           onSearch={handleSearch}
           onCommunityChange={handleCommunityChange}

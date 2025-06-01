@@ -19,26 +19,44 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/lib/utils";
+import { useCommentApi } from "@/lib/api/comment.api";
+import { toast } from "sonner";
+
+interface CommentDialogProps {
+  postId: number;
+  onCreate?: () => void;
+}
 
 const createPostSchema = z.object({
-  context: z.string().min(1, "Content is required"),
+  content: z.string().min(1, "Content is required"),
 });
-type CreatePostValues = z.infer<typeof createPostSchema>;
+type CreateCommentValues = z.infer<typeof createPostSchema>;
 
-export function CommentDialog() {
+export function CommentDialog({ postId, onCreate }: CommentDialogProps) {
+  const commentApi = useCommentApi();
+  const [open, setOpen] = React.useState(false);
   const isMobile = useMediaQuery(768);
-  const form = useForm<CreatePostValues>({
+  const form = useForm<CreateCommentValues>({
     resolver: zodResolver(createPostSchema),
-    defaultValues: { context: "" },
+    defaultValues: { content: "" },
   });
 
   const handleCancel = () => {
     form.reset();
+    setOpen(false);
   };
 
-  const onSubmit = (data: CreatePostValues) => {
-    console.log("Submitted:", data);
-    form.reset();
+  const onSubmit = async (data: CreateCommentValues) => {
+    try {
+      await commentApi.create({ ...data, postId });
+      toast.success("Created successfully");
+      form.reset();
+      onCreate?.();
+      setOpen(false);
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast.error("Failed to create comment");
+    }
   };
 
   const FormContent = () => (
@@ -46,7 +64,7 @@ export function CommentDialog() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="context"
+          name="content"
           render={({ field }) => (
             <FormItem>
               <FormControl>
@@ -80,7 +98,7 @@ export function CommentDialog() {
 
   if (isMobile) {
     return (
-      <Dialog>
+      <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
           <Button className="mt-5" variant="success-outline" type="button">
             Add a Comments
