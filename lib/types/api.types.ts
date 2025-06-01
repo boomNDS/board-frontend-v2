@@ -1,4 +1,5 @@
-// User types
+import type { communityOptionsType } from "../types/post.types";
+
 export interface User {
   id: number;
   email: string;
@@ -25,19 +26,31 @@ export interface Post {
   id: number;
   title: string;
   content: string;
+  community: communityOptionsType;
   authorId: number;
   createdAt: string;
   updatedAt: string;
+  user: User;
+  commentsCount: number;
+  comments: Comment[];
+}
+
+export interface PostQueryParams {
+  search?: string;
+  community?: string;
+  [key: string]: string | undefined;
 }
 
 export interface CreatePostRequest {
   title: string;
   content: string;
+  [key: string]: string;
 }
 
 export interface UpdatePostRequest {
   title?: string;
   content?: string;
+  [key: string]: string | undefined;
 }
 
 export interface Comment {

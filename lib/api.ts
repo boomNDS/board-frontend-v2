@@ -26,9 +26,13 @@ export const useApi = () => {
   };
 
   return {
-    get: <T>(url: string) =>
+    get: <T>(
+      url: string,
+      params?: Record<string, string | number | boolean | undefined>
+    ) =>
       api<T>(url, {
         headers: getAuthHeader() as Record<string, string>,
+        params,
       }),
     post: <T>(url: string, data: Record<string, unknown>) =>
       api<T>(url, {

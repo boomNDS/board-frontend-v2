@@ -3,30 +3,38 @@ import { useAuth } from "@/lib/auth-context";
 import { useRouter } from "next/navigation";
 import { BlogCard } from "@/components/blogCard";
 import { SearchBar } from "@/components/SearchBar";
-import { useState } from "react";
-import { communityOptions } from "@/lib/types/post.types";
+import { useState, useEffect } from "react";
+import { usePostApi } from "@/lib/api/post.api";
+import type { Post } from "@/lib/types/api.types";
 
 export default function OurBlog() {
   const { user } = useAuth();
   const router = useRouter();
   const [selectedCommunity, setSelectedCommunity] = useState<string>();
   const [searchQuery, setSearchQuery] = useState("");
+  const [len, setLen] = useState<number>(0);
+  const [blogs, setBlogs] = useState<Post[]>([]);
+  const postApi = usePostApi();
 
-  const mockData = Array.from({ length: 5 }).map((_, i) => ({
-    id: i + 1,
-    username: `User ${i + 1}`,
-    avatar: undefined,
-    community:
-      communityOptions[Math.floor(Math.random() * communityOptions.length)],
-    title: `Sample Blog Title ${i + 1}`,
-    content:
-      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    comments: Math.floor(Math.random() * 20),
-  }));
-  const len = mockData.length;
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const data = await postApi.getPosts({
+          search: searchQuery,
+          community: selectedCommunity,
+        });
+        setBlogs(data);
+        setLen(data.length);
+      } catch (error) {
+        console.error("Error fetching posts:", error);
+      }
+    };
+
+    fetchPosts();
+  }, [searchQuery, selectedCommunity, postApi.getPosts]);
 
   const handleSearch = (value: string) => {
-    console.log(searchQuery)
+    console.log(searchQuery);
     setSearchQuery(value);
   };
 
@@ -52,7 +60,7 @@ export default function OurBlog() {
           selectedCommunity={selectedCommunity}
         />
         <div className="mx-auto max-w-[798px]">
-          {mockData.map((post, idx) => {
+          {blogs.map((post, idx) => {
             const roundingClass =
               len === 1
                 ? "rounded-[12px]"
@@ -67,11 +75,11 @@ export default function OurBlog() {
                 id={post.id}
                 userId={user?.id}
                 className={roundingClass}
-                username={post.username}
+                username={post.user.username}
                 community={post.community}
                 title={post.title}
                 content={post.content}
-                comments={post.comments}
+                comments={post.commentsCount}
                 isEdit
               />
             );
