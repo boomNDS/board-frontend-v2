@@ -16,8 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'
-
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -27,7 +26,7 @@ const formSchema = z.object({
 
 export default function RegisterPage() {
   const { register: registerUser } = useAuth();
-  const router = useRouter()
+  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -63,7 +62,11 @@ export default function RegisterPage() {
               <FormItem>
                 <FormLabel className="text-white">Username</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" placeholder="Username" {...field} />
+                  <Input
+                    className="bg-white"
+                    placeholder="Username"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -76,7 +79,12 @@ export default function RegisterPage() {
               <FormItem>
                 <FormLabel className="text-white">Email</FormLabel>
                 <FormControl>
-                  <Input className="bg-white" type="email" placeholder="Email" {...field} />
+                  <Input
+                    className="bg-white"
+                    type="email"
+                    placeholder="Email"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -89,7 +97,12 @@ export default function RegisterPage() {
               <FormItem>
                 <FormLabel className="hidden text-white">Password</FormLabel>
                 <FormControl>
-                  <Input className="hidden bg-white" type="password" placeholder="Password" {...field} />
+                  <Input
+                    className="hidden bg-white"
+                    type="password"
+                    placeholder="Password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

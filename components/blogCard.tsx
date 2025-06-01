@@ -16,7 +16,6 @@ import { EditPost } from "@/components/EditPost";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import Link from "next/link";
 
-
 interface BlogCardProps {
   className?: string;
   id: number;
@@ -101,7 +100,6 @@ export function BlogCard({
           )}
         </CardHeader>
         <Link href={`/blog/${id}`}>
-
           <CardContent className="space-y-2">
             <Badge variant="secondary">{community}</Badge>
             <CardTitle className="text-lg">{title}</CardTitle>

@@ -8,7 +8,16 @@ interface InputProps extends React.ComponentProps<"input"> {
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type = "text", icon: IconComponent, iconPosition = "left", ...props }, ref) => {
+  (
+    {
+      className,
+      type = "text",
+      icon: IconComponent,
+      iconPosition = "left",
+      ...props
+    },
+    ref,
+  ) => {
     const hasIcon = !!IconComponent;
 
     const paddingClass = hasIcon
@@ -23,7 +32,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           <div
             className={cn(
               "absolute inset-y-0 flex items-center",
-              iconPosition === "left" ? "left-2" : "right-2"
+              iconPosition === "left" ? "left-2" : "right-2",
             )}
           >
             <IconComponent className="h-5 w-5 text-muted-foreground" />
@@ -38,13 +47,13 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             "focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]",
             "aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive",
             paddingClass,
-            className
+            className,
           )}
           {...props}
         />
       </div>
     );
-  }
+  },
 );
 
 Input.displayName = "Input";

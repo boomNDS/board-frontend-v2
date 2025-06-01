@@ -3,16 +3,20 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "correctness": {
+        "useExhaustiveDependencies": "off"
+      }
     },
-    "ignore": ["components/ui/**/*.tsx"]
+    "ignore": ["components/ui/**/*.tsx", ".next"]
   },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
     "indentWidth": 2,
     "lineEnding": "lf",
-    "lineWidth": 80
+    "lineWidth": 80,
+    "ignore": [".next"]
   },
   "organizeImports": {
     "enabled": true

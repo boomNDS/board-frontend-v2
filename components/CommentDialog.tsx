@@ -20,7 +20,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useMediaQuery } from "@/lib/utils";
 
-
 const createPostSchema = z.object({
   context: z.string().min(1, "Content is required"),
 });
@@ -71,11 +70,7 @@ export function CommentDialog() {
           >
             Cancel
           </Button>
-          <Button
-            variant="success"
-            type="submit"
-            className="w-full lg:w-auto"
-          >
+          <Button variant="success" type="submit" className="w-full lg:w-auto">
             Post
           </Button>
         </div>

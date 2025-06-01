@@ -1,22 +1,18 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useAuth } from "@/lib/auth-context"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import Image from "next/image"
-import { usePathname } from "next/navigation"
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet"
-import { Menu, LogOut, Home, Edit } from "lucide-react"
+import { useState } from "react";
+import { useAuth } from "@/lib/auth-context";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu, LogOut, Home, Edit } from "lucide-react";
 
 export function Navbar() {
-  const { user, logout } = useAuth()
-  const [isOpen, setIsOpen] = useState(false)
-  const pathname = usePathname()
+  const { user, logout } = useAuth();
+  const [isOpen, setIsOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <nav className="fixed top-0 w-full z-50 border-b bg-[#243831]">
@@ -30,9 +26,7 @@ export function Navbar() {
         <div className="hidden md:flex items-center space-x-4">
           {user ? (
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-white">
-                {user.username}
-              </span>
+              <span className="text-sm text-white">{user.username}</span>
               <div className="flex items-center space-x-2">
                 <Image
                   src="https://i.pravatar.cc/300"
@@ -41,7 +35,10 @@ export function Navbar() {
                   height={40}
                   className="rounded-full"
                 />
-                <LogOut className="ml-4 cursor-pointer text-white h-4 w-4 mr-2" onClick={logout} />
+                <LogOut
+                  className="ml-4 cursor-pointer text-white h-4 w-4 mr-2"
+                  onClick={logout}
+                />
               </div>
             </div>
           ) : (
@@ -66,28 +63,36 @@ export function Navbar() {
                 <Link href="/" onClick={() => setIsOpen(false)}>
                   <Button
                     variant="ghost"
-                    className={`w-full justify-start text-white ${pathname === "/" ? "font-bold" : ""
-                      }`}
+                    className={`w-full justify-start text-white ${
+                      pathname === "/" ? "font-bold" : ""
+                    }`}
                   >
-                    <Home className="text-white size-4" /><span>Home</span>
+                    <Home className="text-white size-4" />
+                    <span>Home</span>
                   </Button>
                 </Link>
                 {user && (
                   <Link href="/our-blogs" onClick={() => setIsOpen(false)}>
                     <Button
                       variant="ghost"
-                      className={`w-full justify-start text-white ${pathname === "/our-blogs" ? "font-bold" : ""
-                        }`}
+                      className={`w-full justify-start text-white ${
+                        pathname === "/our-blogs" ? "font-bold" : ""
+                      }`}
                     >
-                    <Edit className="text-white size-4" /><span>Our Blog</span>
-                  </Button>
+                      <Edit className="text-white size-4" />
+                      <span>Our Blog</span>
+                    </Button>
                   </Link>
                 )}
 
                 <hr className="border-gray-600 my-6" />
                 {user ? (
                   <>
-                    <Button variant="outline" onClick={logout} className="w-full">
+                    <Button
+                      variant="outline"
+                      onClick={logout}
+                      className="w-full"
+                    >
                       Logout
                     </Button>
                   </>
@@ -106,5 +111,5 @@ export function Navbar() {
         </div>
       </div>
     </nav>
-  )
+  );
 }

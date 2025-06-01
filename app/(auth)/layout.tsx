@@ -19,7 +19,7 @@ export default function AuthLayout({
           "rounded-tl-none lg:rounded-tl-[36px]",
           "bg-[#2B5F44]",
           "flex items-center justify-center",
-          "p-8"
+          "p-8",
         )}
       >
         <div className="text-center">
@@ -27,7 +27,7 @@ export default function AuthLayout({
             className={cn(
               "relative mx-auto",
               "w-[171.46px] h-[131.63px]",
-              "lg:w-[299.61px] lg:h-[230px]"
+              "lg:w-[299.61px] lg:h-[230px]",
             )}
           >
             <Image
@@ -47,7 +47,7 @@ export default function AuthLayout({
         className={cn(
           "order-2 lg:order-1",
           "flex-1 flex items-center justify-center",
-          "p-8"
+          "p-8",
         )}
       >
         <div className="w-full max-w-md">{children}</div>

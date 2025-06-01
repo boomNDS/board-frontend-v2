@@ -30,31 +30,47 @@ import {
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
 import { communityOptions } from "@/lib/types/post.types";
+import { usePostApi } from "@/lib/api/post.api";
+import { toast } from "sonner";
 
 const createPostSchema = z.object({
   community: z.enum(communityOptions),
-  title: z.string().min(1, "Title is required"),
-  context: z.string().min(1, "Content is required"),
+  title: z.string().min(6, "Title must be at least 6 characters"),
+  content: z.string().min(10, "Content must be at least 10 characters"),
 });
 type CreatePostValues = z.infer<typeof createPostSchema>;
 
-export function CreatePost() {
+interface CreatePostProps {
+  onSuccess?: () => void;
+}
+
+export function CreatePost({ onSuccess }: CreatePostProps) {
+  const [open, setOpen] = React.useState(false);
+  const postApi = usePostApi();
   const form = useForm<CreatePostValues>({
     resolver: zodResolver(createPostSchema),
-    defaultValues: { community: "history", title: "", context: "" },
+    defaultValues: { community: "history", title: "", content: "" },
   });
 
   const handleCancel = () => {
     form.reset();
   };
 
-  const onSubmit = (data: CreatePostValues) => {
-    console.log("Submitted:", data);
-    form.reset();
+  const onSubmit = async (data: CreatePostValues) => {
+    try {
+      await postApi.createPost(data);
+      toast.success("Created successfully");
+      form.reset();
+      setOpen(false);
+      onSuccess?.();
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast.error("Failed to create post");
+    }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="h-[40px]" variant="success">
           Create
@@ -111,12 +127,12 @@ export function CreatePost() {
 
             <FormField
               control={form.control}
-              name="context"
+              name="content"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
                     <Textarea
-                      placeholder="What’s on your mind..."
+                      placeholder="What's on your mind..."
                       rows={6}
                       {...field}
                     />

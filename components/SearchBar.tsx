@@ -12,19 +12,27 @@ import { CreatePost } from "@/components/CreatePost";
 import { communityOptions } from "@/lib/types/post.types";
 
 interface SearchBarProps {
-  onSearch?: (value: string) => void;
-  onCommunityChange?: (value: string) => void;
-  onCreate?: () => void;
+  onSearch: (value: string) => void;
+  onCommunityChange: (value: string | undefined) => void;
   selectedCommunity?: string;
+  initialSearch?: string;
+  onCreate?: () => void;
 }
 
 export function SearchBar({
   onSearch,
   onCommunityChange,
   selectedCommunity,
+  initialSearch = "",
+  onCreate,
 }: SearchBarProps) {
+  const [searchValue, setSearchValue] = useState(initialSearch);
   const [isSearchActive, setIsSearchActive] = useState(false);
   const searchRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    setSearchValue(initialSearch);
+  }, [initialSearch]);
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -41,6 +49,11 @@ export function SearchBar({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
+  const handleSearch = (value: string) => {
+    setSearchValue(value);
+    onSearch(value);
+  };
 
   return (
     <div className="mx-auto max-w-[798px]">
@@ -61,7 +74,8 @@ export function SearchBar({
               className="w-full max-w-[507px] h-[40px]"
               icon={Search}
               placeholder="Search"
-              onChange={(e) => onSearch?.(e.target.value)}
+              value={searchValue}
+              onChange={(e) => handleSearch(e.target.value)}
             />
           </div>
         </div>
@@ -71,18 +85,19 @@ export function SearchBar({
             className={`${isSearchActive ? "opacity-0 scale-95 hidden" : "opacity-100 scale-100 flex"} md:opacity-100 md:scale-100 md:flex items-center gap-5 transition-all duration-200 ease-in-out`}
           >
             <Select value={selectedCommunity} onValueChange={onCommunityChange}>
-              <SelectTrigger variant="ghost" className="w-auto-[40px]">
-                <SelectValue placeholder="Community" />
+              <SelectTrigger className="w-full md:w-[200px]">
+                <SelectValue placeholder="Select Community" />
               </SelectTrigger>
               <SelectContent>
-                {communityOptions.map((option) => (
-                  <SelectItem key={option} value={option}>
-                    <span className="first-letter:capitalize">{option}</span>
+                <SelectItem value="all">All</SelectItem>
+                {communityOptions.map((community) => (
+                  <SelectItem key={community} value={community}>
+                    {community}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
-            <CreatePost />
+            <CreatePost onSuccess={() => onCreate?.()} />
           </div>
         </div>
       </div>

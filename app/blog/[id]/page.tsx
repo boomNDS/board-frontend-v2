@@ -10,11 +10,11 @@ import { MessageCircle, ArrowLeft } from "lucide-react";
 import { timeAgo } from "@/lib/dayUtils";
 import { useParams } from "next/navigation";
 import dayjs from "dayjs";
-import { useRouter } from 'next/navigation';
-import { useState, useEffect } from 'react';
-import { CommentDialog } from "@/components/CommentDialog"
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { CommentDialog } from "@/components/CommentDialog";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 interface BlogPost {
   title: string;
@@ -28,7 +28,7 @@ interface BlogPost {
     username: string;
     content: string;
   }[];
-  status: 'online' | 'offline';
+  status: "online" | "offline";
   createdAt: Date;
 }
 
@@ -36,18 +36,23 @@ async function getBlogPost(id: string): Promise<BlogPost | null> {
   const mockPosts: BlogPost[] = Array.from({ length: 5 }).map((_, i) => ({
     title: `Sample Blog Title ${i + 1}`,
     username: `User ${i + 1}`,
-    community: communityOptions[i % communityOptions.length] as communityOptionsType,
+    community: communityOptions[
+      i % communityOptions.length
+    ] as communityOptionsType,
     avatar: i % 2 === 0 ? `https://i.pravatar.cc/300?img=${i + 1}` : undefined,
     content:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    comments: Array.from({ length: Math.floor(Math.random() * 5) }).map((_, j) => ({
-      id: j + 1,
-      username: `Commenter ${j + 1}`,
-      avatar: j % 2 === 0 ? `https://i.pravatar.cc/300?img=${j + 1}` : undefined,
-      content: `This is a mock comment ${j + 1} for post ${i + 1}.`,
-    })),
-    status: i % 2 === 0 ? 'online' : 'offline',
-    createdAt: dayjs().subtract(5, 'hour').toDate(),
+    comments: Array.from({ length: Math.floor(Math.random() * 5) }).map(
+      (_, j) => ({
+        id: j + 1,
+        username: `Commenter ${j + 1}`,
+        avatar:
+          j % 2 === 0 ? `https://i.pravatar.cc/300?img=${j + 1}` : undefined,
+        content: `This is a mock comment ${j + 1} for post ${i + 1}.`,
+      }),
+    ),
+    status: i % 2 === 0 ? "online" : "offline",
+    createdAt: dayjs().subtract(5, "hour").toDate(),
   }));
 
   const postId = Number.parseInt(id, 10) - 1;
@@ -85,7 +90,13 @@ export default function BlogPage() {
     <main className="container mx-auto py-8 max-w-3xl mt-10">
       <article className="space-y-6">
         <header className="flex flex-col space-y-5">
-          <Button variant="green-100" className="w-[40px] h-[40px] rounded-full" onClick={() => router.back()}><ArrowLeft className="text-[#243831] w-[14px] h-[14px]" /></Button>
+          <Button
+            variant="green-100"
+            className="w-[40px] h-[40px] rounded-full"
+            onClick={() => router.back()}
+          >
+            <ArrowLeft className="text-[#243831] w-[14px] h-[14px]" />
+          </Button>
           <div className="flex items-center space-x-3 mt-5">
             <div className="relative">
               <Avatar className="w-[48px] h-[48px]">
@@ -96,14 +107,19 @@ export default function BlogPage() {
                 )}
               </Avatar>
               <span
-                className={`absolute bottom-0 right-0 block size-3 rounded-full ring-2 ring-white ${post.status === 'online' ? 'bg-green-500' : 'bg-red-500'
-                  }`}
+                className={`absolute bottom-0 right-0 block size-3 rounded-full ring-2 ring-white ${
+                  post.status === "online" ? "bg-green-500" : "bg-red-500"
+                }`}
               />
             </div>
             <p className="text-[14px] font-semibold">{post.username}</p>
-            <p className="text-[#939494] text-[12px]">{timeAgo(post.createdAt)}</p>
+            <p className="text-[#939494] text-[12px]">
+              {timeAgo(post.createdAt)}
+            </p>
           </div>
-          <Badge variant="ghost" className="capitalize">{post.community}</Badge>
+          <Badge variant="ghost" className="capitalize">
+            {post.community}
+          </Badge>
           <h1 className="text-[28px] font-bold">{post.title}</h1>
         </header>
 
@@ -127,18 +143,29 @@ export default function BlogPage() {
                 <div key={comment.id} className="flex space-x-2">
                   <Avatar className="w-[40px] h-[40px]">
                     {comment.avatar ? (
-                      <AvatarImage src={comment.avatar} alt={comment.username} />
+                      <AvatarImage
+                        src={comment.avatar}
+                        alt={comment.username}
+                      />
                     ) : (
-                      <AvatarFallback>{comment.username.charAt(0)}</AvatarFallback>
+                      <AvatarFallback>
+                        {comment.username.charAt(0)}
+                      </AvatarFallback>
                     )}
                   </Avatar>
 
                   <div className="mt-2">
                     <div className="flex a">
-                      <p className="font-semibold text-sm">{comment.username}</p>
-                      <p className="text-[#939494] text-[12px] ml-3">{timeAgo(post.createdAt)}</p>
+                      <p className="font-semibold text-sm">
+                        {comment.username}
+                      </p>
+                      <p className="text-[#939494] text-[12px] ml-3">
+                        {timeAgo(post.createdAt)}
+                      </p>
                     </div>
-                    <p className="text-gray-700 text-sm mt-4">{comment.content}</p>
+                    <p className="text-gray-700 text-sm mt-4">
+                      {comment.content}
+                    </p>
                   </div>
                 </div>
               ))}

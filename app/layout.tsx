@@ -8,7 +8,7 @@ const inter = Inter({ subsets: ["latin"] });
 const castoro = Castoro({
   weight: "400",
   subsets: ["latin"],
-  variable: '--font-castoro',
+  variable: "--font-castoro",
 });
 
 export const metadata: Metadata = {

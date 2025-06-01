@@ -16,7 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   username: z.string().min(1, "Username is required"),
@@ -25,7 +25,7 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const { login } = useAuth();
-  const router = useRouter()
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -47,7 +47,9 @@ export default function LoginPage() {
   return (
     <div className="space-y-6">
       <div className="space-y-2 text-left">
-        <h1 className="text-2xl font-semibold tracking-tight text-white">Sign In</h1>
+        <h1 className="text-2xl font-semibold tracking-tight text-white">
+          Sign In
+        </h1>
       </div>
 
       <Form {...form}>
@@ -58,7 +60,11 @@ export default function LoginPage() {
             render={({ field }) => (
               <FormItem>
                 <FormControl>
-                  <Input className="bg-white" placeholder="Username" {...field} />
+                  <Input
+                    className="bg-white"
+                    placeholder="Username"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -71,7 +77,12 @@ export default function LoginPage() {
               <FormItem>
                 <FormLabel className="hidden text-white">Password</FormLabel>
                 <FormControl>
-                  <Input className="hidden bg-white" type="password" placeholder="Password" {...field} />
+                  <Input
+                    className="hidden bg-white"
+                    type="password"
+                    placeholder="Password"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

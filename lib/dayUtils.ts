@@ -10,7 +10,7 @@ export function timeAgo(date: string | Date): string {
 export function subtract(
   date: string | Date,
   amount: number,
-  unit: dayjs.ManipulateType
+  unit: dayjs.ManipulateType,
 ): Date {
   return dayjs(date).subtract(amount, unit).toDate();
 }
