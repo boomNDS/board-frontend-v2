@@ -31,31 +31,37 @@ import { Button } from "@/components/ui/button";
 import { Edit3 } from "lucide-react";
 import type { communityOptionsType } from "@/lib/types/post.types";
 import { communityOptions } from "@/lib/types/post.types";
+import { usePostApi } from "@/lib/api/post.api";
+import { toast } from "sonner";
 
 const createPostSchema = z.object({
   community: z.enum(communityOptions),
-  title: z.string().min(1, "Title is required"),
-  context: z.string().min(1, "Content is required"),
+  title: z.string().min(6, "Title is required"),
+  content: z.string().min(10, "Content is required"),
 });
 type EditPostValues = z.infer<typeof createPostSchema>;
 
 interface EditPostProps {
   userId: number;
   post: {
+    id: number;
     username: string;
     community: string;
     title: string;
     content: string;
   };
+  onEdit?: () => void;
 }
 
-export function EditPost({ userId, post }: EditPostProps) {
+export function EditPost({ userId, post, onEdit }: EditPostProps) {
+  const postApi = usePostApi();
+  const [open, setOpen] = React.useState(false);
   const form = useForm<EditPostValues>({
     resolver: zodResolver(createPostSchema),
     defaultValues: {
       community: (post.community as communityOptionsType) || "history",
       title: post.title,
-      context: post.content,
+      content: post.content,
     },
   });
 
@@ -63,13 +69,22 @@ export function EditPost({ userId, post }: EditPostProps) {
     form.reset();
   };
 
-  const onSubmit = (data: EditPostValues) => {
-    console.log("Submitted:", { ...data, userId });
-    form.reset();
+  const onSubmit = async (data: EditPostValues) => {
+    try {
+      console.log("Submitted:", { ...data, userId });
+      await postApi.updatePost(post.id, data);
+      toast.success("Edited successfully");
+      form.reset();
+      onEdit?.();
+      setOpen(false);
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast.error("Failed to edit post");
+    }
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           className="cursor-pointer"
@@ -130,7 +145,7 @@ export function EditPost({ userId, post }: EditPostProps) {
 
             <FormField
               control={form.control}
-              name="context"
+              name="content"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>

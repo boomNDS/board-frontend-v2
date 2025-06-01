@@ -14,7 +14,7 @@ export const usePostApi = () => {
     getPost: (id: number) => api.get<Post>(`/posts/${id}`),
     createPost: (data: CreatePostRequest) => api.post<Post>("/posts", data),
     updatePost: (id: number, data: UpdatePostRequest) =>
-      api.put<Post>(`/posts/${id}`, data),
+      api.patch<Post>(`/posts/${id}`, data),
     deletePost: (id: number) => api.delete<void>(`/posts/${id}`),
     getMyPosts: (params?: PostQueryParams) =>
       api.get<Post[]>("/posts/me", params),

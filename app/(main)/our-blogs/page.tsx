@@ -110,6 +110,8 @@ export default function OurBlog() {
                   content={post.content}
                   comments={post.commentsCount}
                   isEdit
+                  onEdit={fetchPosts}
+                  onDelete={fetchPosts}
                 />
               );
             })

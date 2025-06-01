@@ -26,6 +26,8 @@ interface BlogCardProps {
   content: string;
   comments: number;
   isEdit?: boolean;
+  onEdit?: () => void;
+  onDelete?: () => void;
 }
 
 export function BlogCard({
@@ -38,6 +40,8 @@ export function BlogCard({
   content,
   comments,
   isEdit = false,
+  onEdit,
+  onDelete,
 }: BlogCardProps) {
   const [displayText, setDisplayText] = useState(content);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
@@ -45,6 +49,7 @@ export function BlogCard({
   const handleDelete = () => {
     setIsConfirmDialogOpen(false);
     console.log("Delete post");
+    onDelete?.();
   };
 
   useEffect(() => {
@@ -81,7 +86,8 @@ export function BlogCard({
             <div>
               <EditPost
                 userId={userId}
-                post={{ username, title, content, community }}
+                post={{ id, username, title, content, community }}
+                onEdit={onEdit}
               />
               <Button
                 className="cursor-pointer"
