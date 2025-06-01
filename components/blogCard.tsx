@@ -15,6 +15,8 @@ import { cn } from "@/lib/utils";
 import { EditPost } from "@/components/EditPost";
 import { ConfirmDialog } from "@/components/ConfirmDialog";
 import Link from "next/link";
+import { usePostApi } from "@/lib/api/post.api";
+import { toast } from "sonner";
 
 interface BlogCardProps {
   className?: string;
@@ -43,13 +45,21 @@ export function BlogCard({
   onEdit,
   onDelete,
 }: BlogCardProps) {
+  const postApi = usePostApi();
   const [displayText, setDisplayText] = useState(content);
   const [isConfirmDialogOpen, setIsConfirmDialogOpen] = useState(false);
 
-  const handleDelete = () => {
-    setIsConfirmDialogOpen(false);
-    console.log("Delete post");
-    onDelete?.();
+  const handleDelete = async () => {
+    try {
+      await postApi.deletePost(id);
+      toast.success("Deleted successfully");
+      setIsConfirmDialogOpen(false);
+      console.log("Delete post");
+      onDelete?.();
+    } catch (error) {
+      console.error("Deleted error:", error);
+      toast.error("Failed to delete post");
+    }
   };
 
   useEffect(() => {
